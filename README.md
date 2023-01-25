@@ -5,7 +5,7 @@ The project is inspired by https://github.com/Johnson468/Stay-Awake
 
 ## Build the project
 ### Prerequisite
-install rust by following this rust website: https://www.rust-lang.org/tools/install
+install rust by following instructions in rust website: https://www.rust-lang.org/tools/install
 
 ### Build CMD
 ```bash
