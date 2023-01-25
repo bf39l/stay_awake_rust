@@ -9,7 +9,7 @@ install rust by following this rust website: https://www.rust-lang.org/tools/ins
 
 ### Build CMD
 ```bash
-  cargo build -r # -r for release
+cargo build -r # -r for release
 ```
 
 ## Usage
