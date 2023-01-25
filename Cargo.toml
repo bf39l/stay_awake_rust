@@ -1,0 +1,11 @@
+[package]
+name = "stay_awake_rust"
+version = "0.1.0"
+edition = "2021"
+authors = ["bf39L <bf39l1000@gmail.com>"]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+chrono = "0.4.23"
+enigo = "0.0.14"
