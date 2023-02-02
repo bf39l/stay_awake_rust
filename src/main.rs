@@ -1,6 +1,7 @@
 use std::{thread, time, env};
 use chrono::Local;
-use enigo::{Enigo, MouseControllable, KeyboardControllable};
+use enigo::{Enigo, MouseControllable};
+use rdev::{simulate, EventType, Key, SimulateError};
 
 const ONE_MIN: time::Duration= time::Duration::from_secs(60);
 // const ONE_SEC: time::Duration= time::Duration::from_secs(1);
@@ -43,7 +44,8 @@ fn main() {
         }
 
         for i in 0..keypress_total {
-            enigo.key_click(enigo::Key::Shift);
+            // enigo.key_click(enigo::Key::Shift);
+            send(&EventType::KeyPress(Key::ShiftLeft));
 
             println!("Key pressed {}/{}", i+1,keypress_total);
         }
@@ -62,4 +64,15 @@ fn get_wait_time() -> i32 {
     }
 
     return wait_time;
+}
+
+fn send(event_type: &EventType) {
+    match simulate(event_type) {
+        Ok(()) => (),
+        Err(SimulateError) => {
+            println!("We could not send {:?}", event_type);
+        }
+    }
+    // Let ths OS catchup (at least MacOS)
+    thread::sleep(MILISEC_100);
 }

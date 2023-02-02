@@ -9,3 +9,4 @@ authors = ["bf39L <bf39l1000@gmail.com>"]
 [dependencies]
 chrono = "0.4.23"
 enigo = "0.0.14"
+rdev = "0.5.2"
