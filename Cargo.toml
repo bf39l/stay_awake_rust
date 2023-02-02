@@ -8,5 +8,4 @@ authors = ["bf39L <bf39l1000@gmail.com>"]
 
 [dependencies]
 chrono = "0.4.23"
-keyboard-types = "0.6.2"
-mouse-rs = "0.4.2"
+enigo = "0.0.14"

@@ -1,7 +1,6 @@
 use std::{thread, time, env};
 use chrono::Local;
-use mouse_rs::{Mouse};
-use keyboard_types;
+use enigo::{Enigo, MouseControllable, KeyboardControllable};
 
 const ONE_MIN: time::Duration= time::Duration::from_secs(60);
 // const ONE_SEC: time::Duration= time::Duration::from_secs(1);
@@ -14,7 +13,7 @@ fn main() {
     println!("Each interval will sleep for {} min", wait_time);
     println!("################");
 
-    let mousers = Mouse::new();
+    let mut enigo = Enigo::new();
 
     let mut interval = 1;
     // let init_pos = 0;
@@ -32,25 +31,19 @@ fn main() {
 
         println!("Moving...");
 
-        let (cur_x, cur_y) = match mousers.get_position() {
-            Ok(mouse_pos) => (mouse_pos.x, mouse_pos.y),
-            Err(_) => (0,0),
-        };
+        let (cur_x, cur_y) = Enigo::mouse_location();
 
         for i in 0..(fixed_width/multi) {
             thread::sleep(MILISEC_100);
             // println!("{}, {}",(cur_x + i * multi) % fixed_width, (cur_y + i * multi) % fixed_width);
-            mousers.move_to(
+            enigo.mouse_move_to(
                 (cur_x + i * multi) % fixed_width,
                 (cur_y + i * multi) % fixed_width
-            ).expect("failed on mouse moving")
+            )
         }
 
         for i in 0..keypress_total {
-            // Not too sure this function would actual send keys to system
-            // original enigo lib has a bug which cause panic on windows
-            thread::sleep(MILISEC_100);
-            keyboard_types::webdriver::send_keys(keyboard_types::Code::ShiftLeft.to_string().as_str());
+            enigo.key_click(enigo::Key::Shift);
 
             println!("Key pressed {}/{}", i+1,keypress_total);
         }
