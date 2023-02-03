@@ -1,6 +1,6 @@
 use std::{thread, time, env};
 use chrono::Local;
-use enigo::{Enigo, MouseControllable};
+use mouse_rs::{Mouse};
 use rdev::{simulate, EventType, Key, SimulateError};
 
 const ONE_MIN: time::Duration= time::Duration::from_secs(60);
@@ -14,7 +14,7 @@ fn main() {
     println!("Each interval will sleep for {} min", wait_time);
     println!("################");
 
-    let mut enigo = Enigo::new();
+    let mousers = Mouse::new();
 
     let mut interval = 1;
     // let init_pos = 0;
@@ -32,15 +32,22 @@ fn main() {
 
         println!("Moving...");
 
-        let (cur_x, cur_y) = Enigo::mouse_location();
+        let (cur_x, cur_y) = match mousers.get_position() {
+            Ok(mouse_pos) => (mouse_pos.x, mouse_pos.y),
+            Err(_) => (0,0),
+        };
 
         for i in 0..(fixed_width/multi) {
             thread::sleep(MILISEC_100);
             // println!("{}, {}",(cur_x + i * multi) % fixed_width, (cur_y + i * multi) % fixed_width);
-            enigo.mouse_move_to(
-                (cur_x + i * multi) % fixed_width,
-                (cur_y + i * multi) % fixed_width
-            )
+            send(&EventType::MouseMove {
+                x: f64::from((cur_x + i * multi) % fixed_width),
+                y: f64::from((cur_y + i * multi) % fixed_width)
+            });
+            // enigo.mouse_move_to(
+            //     (cur_x + i * multi) % fixed_width,
+            //     (cur_y + i * multi) % fixed_width
+            // )
         }
 
         for i in 0..keypress_total {
