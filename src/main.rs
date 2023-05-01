@@ -36,14 +36,28 @@ fn main() {
             Ok(mouse_pos) => (mouse_pos.x, mouse_pos.y),
             Err(_) => (0,0),
         };
-
+        let mut last_x = cur_x;
+        let mut last_y = cur_y;
         for i in 0..(fixed_width/multi) {
             thread::sleep(MILISEC_100);
             // println!("{}, {}",(cur_x + i * multi) % fixed_width, (cur_y + i * multi) % fixed_width);
+            let (x, y) = match mousers.get_position() {
+                Ok(mouse_pos) => (mouse_pos.x, mouse_pos.y),
+                Err(_) => (0,0),
+            };
+            if last_x != x || last_y != y {
+                println!("Mouse moved, skip moving...");
+                break;
+            }
+
             send(&EventType::MouseMove {
                 x: f64::from((cur_x + i * multi) % fixed_width),
                 y: f64::from((cur_y + i * multi) % fixed_width)
             });
+
+            last_x = (cur_x + i * multi) % fixed_width;
+            last_y = (cur_y + i * multi) % fixed_width
+
             // enigo.mouse_move_to(
             //     (cur_x + i * multi) % fixed_width,
             //     (cur_y + i * multi) % fixed_width
