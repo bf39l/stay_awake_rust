@@ -18,7 +18,8 @@ fn main() {
     let mousers = Mouse::new();
 
     let mut interval = 1;
-    let steps = 200;
+    let steps = get_steps();
+    println!("Steps: {}", steps);
     let multi = 4;
     let keypress_total = 3;
 
@@ -95,6 +96,16 @@ fn get_wait_time() -> i32 {
     }
 
     return wait_time;
+}
+
+fn get_steps() -> i32 {
+    let args: Vec<String> = env::args().collect();
+    let mut steps: i32 = 200;
+    if args.len() >= 3 {
+        steps = i32::from_str_radix(&args[2], 10).unwrap_or(steps);
+    }
+
+    return steps;
 }
 
 fn detect_mouse_moved(mousers: &Mouse, pos: Point) -> bool {
